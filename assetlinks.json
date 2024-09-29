@@ -1,0 +1,11 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.everblaze.app.inklink",
+      "sha256_cert_fingerprints":
+        ["28:E0:89:37:7D:68:8D:71:53:CF:F3:00:FC:16:B7:84:94:FF:A2:E5:69:2F:3B:58:1F:7E:4D:9D:8E:02:C3:E5"]
+    }
+  }
+]

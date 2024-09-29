@@ -1,0 +1,14 @@
+{
+    "applinks": {
+      "details": [
+        {
+          "appIDs": [
+            "L4YCM8J92M.com.chooseme.app"
+          ]
+        }
+       ]
+     },
+     "webcredentials": {
+        "apps": [ "L4YCM8J92M.com.chooseme.app" ]
+     }
+  }
