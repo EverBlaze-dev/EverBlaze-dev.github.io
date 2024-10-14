@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,33 +20,32 @@
             const androidPackageName = 'com.everblaze.app.inklink';
             const androidStoreLink = 'https://play.google.com/store/apps/details?id=' + androidPackageName;
             const iosAppStoreLink = 'https://apps.apple.com/app/6523435335';
-
+            const appUrlScheme = 'inklink://'; 
             const deviceType = getDeviceType();
-            let appUrlScheme, storeLink;
-
-            // 디바이스 유형에 따라 URL 스킴과 스토어 링크 설정
-            if (deviceType === 'android') {
-                appUrlScheme = 'inklink://'; 
-                storeLink = androidStoreLink;
-            } else if (deviceType === 'ios') {
-                appUrlScheme = 'inklink://'; 
-                storeLink = iosAppStoreLink;
-            } else {
-                document.body.innerHTML = "<h1>모바일에서 이용해주세요</h1>";
-                return;
-            }
+            let storeRedirectTimeout;
 
             // 앱 설치 확인을 위해 URL 스킴으로 리다이렉트 시도
             window.location.href = appUrlScheme;
 
-            // 앱이 설치되지 않았을 경우 스토어로 리다이렉트
-            setTimeout(() => {
-                window.location.href = storeLink;
-            }, 1500);
+            // 타이머를 설정하여, 앱이 설치되지 않았을 경우 스토어로 리다이렉트
+            storeRedirectTimeout = setTimeout(() => {
+                if (deviceType === 'android') {
+                    window.location.href = androidStoreLink;
+                } else if (deviceType === 'ios') {
+                    window.location.href = iosAppStoreLink;
+                }
+            }, 1500); 
+
+            // URL 스킴을 통해 앱이 열렸다면 타이머를 취소
+            window.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    clearTimeout(storeRedirectTimeout);
+                }
+            });
         }
     </script>
 </head>
 <body onload="redirectToStore()">
-    <h1></h1>
+    <h1>Redirecting...</h1>
 </body>
 </html>
