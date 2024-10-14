@@ -5,31 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App Link Redirect</title>
     <script>
+        function getDeviceType() {
+            const userAgent = navigator.userAgent;
+
+            if (/android/i.test(userAgent)) {
+                return 'android';
+            } else if (/iphone|ipad|ipod/i.test(userAgent)) {
+                return 'ios';
+            } else {
+                return 'unknown';
+            }
+        }
+
         function redirectToStore() {
+            const deviceType = getDeviceType();
+            let appUrlScheme, storeLink;
+
             // Android
-            const androidPackageName = 'com.everblaze.app.inklink';
-            const androidStoreLink = 'https://play.google.com/store/apps/details?id=' + androidPackageName;
-
+            if (deviceType === 'android') {
+                appUrlScheme = 'inklink://'; 
+                storeLink = 'https://play.google.com/store/apps/details?id=com.everblaze.app.inklink';
+            }
             // iOS
-            const iosAppStoreLink = 'https://apps.apple.com/app/6523435335';
-            // URL Scheme for Android
-            const appUrlScheme = 'inklink://'; 
+            else if (deviceType === 'ios') {
+                appUrlScheme = 'inklink://'; 
+                storeLink = 'https://apps.apple.com/app/6523435335';
+            } else {
+                document.body.innerHTML = "<h1>Unsupported device</h1>";
+                return;
+            }
 
+            // 앱이 설치되어 있는지 확인하기 위해 URL 스킴을 사용하여 시도
             window.location.href = appUrlScheme;
 
+            // 타이머를 설정하여, 앱이 설치되지 않았을 경우 스토어로 리다이렉트
             setTimeout(() => {
-                window.location.href = androidStoreLink;
-            }, 1500); 
-
-            setTimeout(() => {
-                // iOS 디바이스에서 App Store로 리다이렉트
-                window.location.href = iosAppStoreLink;
+                window.location.href = storeLink;
             }, 1500); 
         }
     </script>
 </head>
 <body onload="redirectToStore()">
-    <h1>Redirecting...</h1>
+    <h1></h1>
 </body>
 </html>
-
