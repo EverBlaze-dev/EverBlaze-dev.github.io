@@ -1,1 +1,35 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Link Redirect</title>
+    <script>
+        function redirectToStore() {
+            // Android
+            const androidPackageName = 'com.everblaze.app.inklink';
+            const androidStoreLink = 'https://play.google.com/store/apps/details?id=' + androidPackageName;
+
+            // iOS
+            const iosAppStoreLink = 'https://apps.apple.com/app/6523435335';
+            // URL Scheme for Android
+            const appUrlScheme = 'inklink://'; 
+
+            window.location.href = appUrlScheme;
+
+            setTimeout(() => {
+                window.location.href = androidStoreLink;
+            }, 1500); 
+
+            setTimeout(() => {
+                // iOS 디바이스에서 App Store로 리다이렉트
+                window.location.href = iosAppStoreLink;
+            }, 1500); 
+        }
+    </script>
+</head>
+<body onload="redirectToStore()">
+    <h1>Redirecting...</h1>
+</body>
+</html>
+
