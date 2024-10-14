@@ -7,7 +7,6 @@
     <script>
         function getDeviceType() {
             const userAgent = navigator.userAgent;
-
             if (/android/i.test(userAgent)) {
                 return 'android';
             } else if (/iphone|ipad|ipod/i.test(userAgent)) {
@@ -18,30 +17,32 @@
         }
 
         function redirectToStore() {
+            const androidPackageName = 'com.everblaze.app.inklink';
+            const androidStoreLink = 'https://play.google.com/store/apps/details?id=' + androidPackageName;
+            const iosAppStoreLink = 'https://apps.apple.com/app/6523435335';
+
             const deviceType = getDeviceType();
             let appUrlScheme, storeLink;
 
-            // Android
+            // 디바이스 유형에 따라 URL 스킴과 스토어 링크 설정
             if (deviceType === 'android') {
                 appUrlScheme = 'inklink://'; 
-                storeLink = 'https://play.google.com/store/apps/details?id=com.everblaze.app.inklink';
-            }
-            // iOS
-            else if (deviceType === 'ios') {
+                storeLink = androidStoreLink;
+            } else if (deviceType === 'ios') {
                 appUrlScheme = 'inklink://'; 
-                storeLink = 'https://apps.apple.com/app/6523435335';
+                storeLink = iosAppStoreLink;
             } else {
-                document.body.innerHTML = "<h1>Unsupported device</h1>";
+                document.body.innerHTML = "<h1>모바일에서 이용해주세요</h1>";
                 return;
             }
 
-            // 앱이 설치되어 있는지 확인하기 위해 URL 스킴을 사용하여 시도
+            // 앱 설치 확인을 위해 URL 스킴으로 리다이렉트 시도
             window.location.href = appUrlScheme;
 
-            // 타이머를 설정하여, 앱이 설치되지 않았을 경우 스토어로 리다이렉트
+            // 앱이 설치되지 않았을 경우 스토어로 리다이렉트
             setTimeout(() => {
                 window.location.href = storeLink;
-            }, 1500); 
+            }, 1500);
         }
     </script>
 </head>
