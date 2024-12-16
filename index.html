@@ -6,11 +6,16 @@
     <title>App Link Redirect</title>
     <script>
         function getDeviceType() {
-            const userAgent = navigator.userAgent;
-            if (/android/i.test(userAgent)) {
+            const userAgent = navigator.userAgent.toLowerCase();
+
+            if (/android/.test(userAgent)) {
                 return 'android';
-            } else if (/iphone|ipad|ipod/i.test(userAgent)) {
+            } else if (/iphone|ipad|ipod/.test(userAgent)) {
                 return 'ios';
+            } else if (/macintosh|mac os/.test(userAgent)) {
+                return 'mac';
+            } else if (/windows/.test(userAgent)) {
+                return 'windows';
             } else {
                 return 'unknown';
             }
@@ -19,25 +24,36 @@
         function redirectToStore() {
             const androidPackageName = 'com.everblaze.app.inklink';
             const androidStoreLink = 'https://play.google.com/store/apps/details?id=' + androidPackageName;
-            const iosAppStoreLink = 'https://apps.apple.com/app/6523435335';
+            const iosAppStoreLink = 'https://apps.apple.com/kr/app/%EC%B8%84%EC%A6%88%EB%AF%B8-%EA%B8%B0%EB%A1%9D-ai-%EC%9D%B8%ED%84%B0%EB%B7%B0/id6523435335';
+            const macStoreLink = iosAppStoreLink; 
+            const windowsStoreLink = androidStoreLink;
+
             const appUrlScheme = 'inklink://'; 
             const deviceType = getDeviceType();
             let storeRedirectTimeout;
 
-            // 앱 설치 확인을 위해 URL 스킴으로 리다이렉트 시도
-            window.location.href = appUrlScheme;
+            if (deviceType === 'android' || deviceType === 'ios') {
+                // 앱 설치 확인을 위해 URL 스킴으로 리다이렉트 시도
+                window.location.href = appUrlScheme;
+            }
 
-            // 타이머를 설정하여, 앱이 설치되지 않았을 경우 스토어로 리다이렉트
+            // 타이머를 설정하여 앱이 설치되지 않았을 경우 스토어로 리다이렉트
             storeRedirectTimeout = setTimeout(() => {
                 if (deviceType === 'android') {
                     window.location.href = androidStoreLink;
                 } else if (deviceType === 'ios') {
                     window.location.href = iosAppStoreLink;
+                } else if (deviceType === 'mac') {
+                    window.location.href = macStoreLink;
+                } else if (deviceType === 'windows') {
+                    window.location.href = windowsStoreLink;
+                } else {
+                    alert('현재 기기는 지원되지 않습니다.');
                 }
-            }, 1500); 
+            }, 1500);
 
             // URL 스킴을 통해 앱이 열렸다면 타이머를 취소
-            window.addEventListener('visibilitychange', function() {
+            window.addEventListener('visibilitychange', function () {
                 if (document.hidden) {
                     clearTimeout(storeRedirectTimeout);
                 }
@@ -46,6 +62,6 @@
     </script>
 </head>
 <body onload="redirectToStore()">
-    <h1>Redirecting...</h1>
+    <h1>Redirecting to the appropriate store...</h1>
 </body>
 </html>
